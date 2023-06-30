@@ -16,7 +16,7 @@ terraform {
     }
 
     helm = {
-      source = "hashicorp/helm"
+      source  = "hashicorp/helm"
       version = "2.10.1"
     }
   }
@@ -31,7 +31,7 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config"
+    config_path    = "~/.kube/config"
     config_context = "kind-kind"
   }
 }
@@ -132,26 +132,26 @@ resource "kubernetes_namespace" "guestbook" {
 
 resource "kubernetes_secret" "example" {
   metadata {
-    name = "argocd-secret"
+    name      = "argocd-secret"
     namespace = "argocd"
   }
 
   data = {
-    "oidc.azure.clientId" = azuread_application.this.application_id
+    "oidc.azure.clientId"     = azuread_application.this.application_id
     "oidc.azure.clientSecret" = azuread_application_password.this.value
   }
 }
 
 resource "helm_release" "argocd" {
-  name = "argocd"
-  namespace = kubernetes_namespace.argocd.id
+  name       = "argocd"
+  namespace  = kubernetes_namespace.argocd.id
   repository = "https://argoproj.github.io/argo-helm"
-  chart = "argo-cd"
-  version = "5.36.11"
+  chart      = "argo-cd"
+  version    = "5.36.11"
 
   values = [
-    templatefile("${path.module}/argocd-values.yaml.tpl",{
-      azure_tenant = data.azuread_client_config.current.tenant_id
+    templatefile("${path.module}/argocd-values.yaml.tpl", {
+      azure_tenant  = data.azuread_client_config.current.tenant_id
       argo_hostname = local.hostname
     })
   ]
