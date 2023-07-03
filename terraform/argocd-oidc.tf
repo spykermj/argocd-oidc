@@ -60,6 +60,10 @@ module "argocd_azure_application" {
   logout_path    = "/logout"
 }
 
+output "argocd_app_roles" {
+  value = module.argocd_azure_application.app_role_ids
+}
+
 resource "kubernetes_namespace" "argocd" {
   metadata {
     name = "argocd"

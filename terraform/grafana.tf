@@ -35,6 +35,10 @@ module "grafana_azure_application" {
   logout_path    = "/logout"
 }
 
+output "grafana_app_ids" {
+ value = module.grafana_azure_application.app_role_ids
+}
+
 resource "kubernetes_namespace" "grafana" {
   metadata {
     name = "grafana"
