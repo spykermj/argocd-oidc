@@ -1,8 +1,8 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: grafana-spykerman-co-uk
-  namespace: monitoring
+  name: grafana-cert
+  namespace: ${namespace}
 spec:
   # Secret names are always required.
   secretName: grafana-tls
@@ -27,7 +27,7 @@ spec:
     - client auth
   # At least one of a DNS Name, URI, or IP address is required.
   dnsNames:
-    - grafana.spykerman.co.uk
+    - ${hostname}
   # Issuer references are always required.
   issuerRef:
     name: cluster-issuer

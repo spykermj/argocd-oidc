@@ -54,11 +54,11 @@ module "argocd_azure_application" {
       value        = "Viewer"
     },
   ]
-  hostname = local.argo_hostname
+  hostname       = local.argo_hostname
   logo           = "${path.module}/images/argo-stacked-color.png"
   logout_path    = "/logout"
   redirect_paths = ["/auth/callback"]
-  source   = "./oidc"
+  source         = "./oidc"
 }
 
 output "argocd_app_roles" {

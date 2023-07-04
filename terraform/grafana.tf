@@ -33,14 +33,14 @@ module "grafana_azure_application" {
   logo           = "${path.module}/images/Grafana_logo.svg.png"
   logout_path    = "/logout"
   redirect_paths = ["/login/azuread", "/"]
-  source   = "./oidc"
+  source         = "./oidc"
 }
 
 output "grafana_app_ids" {
   value = module.grafana_azure_application.app_role_ids
 }
 
-resource "kubernetes_namespace" "monitoring" {
+resource "kubernetes_namespace" "kps" {
   metadata {
     name = "monitoring"
   }
@@ -49,7 +49,7 @@ resource "kubernetes_namespace" "monitoring" {
 resource "kubernetes_secret" "grafana" {
   metadata {
     name      = "grafana-azure-oauth2"
-    namespace = kubernetes_namespace.monitoring.id
+    namespace = kubernetes_namespace.kps.id
   }
 
   data = {
@@ -59,12 +59,17 @@ resource "kubernetes_secret" "grafana" {
 }
 
 resource "kubernetes_manifest" "grafana_cert" {
-  manifest = yamldecode(file("${path.module}/grafana-cert.yaml"))
+  manifest = yamldecode(
+    templatefile("${path.module}/grafana-cert.yaml.tpl", {
+      hostname  = local.hostname
+      namespace = kubernetes_namespace.kps.id
+    })
+  )
 }
 
 resource "helm_release" "kps" {
   name       = "kps"
-  namespace  = kubernetes_namespace.monitoring.id
+  namespace  = kubernetes_namespace.kps.id
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
   version    = "47.1.0"
