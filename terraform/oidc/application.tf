@@ -10,6 +10,8 @@ resource "azuread_application" "this" {
   sign_in_audience        = "AzureADMyOrg"
   prevent_duplicate_names = true
 
+  logo_image = filebase64(var.logo)
+
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
     dynamic "resource_access" {

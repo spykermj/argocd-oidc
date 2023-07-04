@@ -1,3 +1,17 @@
+variable "app_roles" {
+  description = "A list of the app roles required for this application"
+  type = list(object({
+    description  = string
+    display_name = string
+    value        = string
+  }))
+}
+
+variable "app_name" {
+  description = "Name of this OIDC application"
+  type = string
+}
+
 # https://learn.microsoft.com/en-us/graph/permissions-reference
 variable "graph_api_scopes" {
   description = "The list of graph api permissions needed by the application"
@@ -9,31 +23,22 @@ variable "graph_api_scopes" {
   ]
 }
 
-variable "app_roles" {
-  description = "A list of the app roles required for this application"
-  type = list(object({
-    description  = string
-    display_name = string
-    value        = string
-  }))
-}
-
 variable "hostname" {
   description = "The host name of the application"
   type = string
 }
 
-variable "app_name" {
-  description = "Name of this OIDC application"
+variable "logo" {
+  description = "Path to the png image to use in the gallery for this application"
+  type = string
+}
+
+variable "logout_path" {
+  description = "The path for the application logout. The hostname is already defined."
   type = string
 }
 
 variable "redirect_paths" {
   description = "List of redirect paths. The hostname is already defined."
   type = list(string)
-}
-
-variable "logout_path" {
-  description = "The path for the application logout. The hostname is already defined."
-  type = string
 }

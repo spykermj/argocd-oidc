@@ -6,7 +6,7 @@ locals {
 data "azuread_client_config" "current" {}
 
 module "grafana_azure_application" {
-  source = "./oidc"
+  app_name = local.ad_app_display_name
   app_roles = [
     {
       description  = "Grafana server admin users"
@@ -30,9 +30,10 @@ module "grafana_azure_application" {
     },
   ]
   hostname       = local.hostname
-  app_name       = local.ad_app_display_name
-  redirect_paths = ["/login/azuread", "/"]
+  logo           = "${path.module}/images/Grafana_logo.svg.png"
   logout_path    = "/logout"
+  redirect_paths = ["/login/azuread", "/"]
+  source   = "./oidc"
 }
 
 output "grafana_app_ids" {

@@ -41,8 +41,6 @@ locals {
 }
 
 module "argocd_azure_application" {
-  source   = "./oidc"
-  hostname = local.argo_hostname
   app_name = "argocd"
   app_roles = [
     {
@@ -56,8 +54,11 @@ module "argocd_azure_application" {
       value        = "Viewer"
     },
   ]
-  redirect_paths = ["/auth/callback"]
+  hostname = local.argo_hostname
+  logo           = "${path.module}/images/argo-stacked-color.png"
   logout_path    = "/logout"
+  redirect_paths = ["/auth/callback"]
+  source   = "./oidc"
 }
 
 output "argocd_app_roles" {
