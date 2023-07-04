@@ -1,6 +1,7 @@
 locals {
   ad_app_display_name = "grafana"
   hostname            = "grafana.spykerman.co.uk"
+  namespace           = "monitoring"
 }
 
 data "azuread_client_config" "current" {}
@@ -42,7 +43,7 @@ output "grafana_app_ids" {
 
 resource "kubernetes_namespace" "kps" {
   metadata {
-    name = "monitoring"
+    name = local.namespace
   }
 }
 
@@ -62,7 +63,7 @@ resource "kubernetes_manifest" "grafana_cert" {
   manifest = yamldecode(
     templatefile("${path.module}/grafana-cert.yaml.tpl", {
       hostname  = local.hostname
-      namespace = kubernetes_namespace.kps.id
+      namespace = local.namespace
     })
   )
 }
