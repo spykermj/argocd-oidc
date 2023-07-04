@@ -7,15 +7,17 @@ spec:
   # Secret names are always required.
   secretName: grafana-tls
 
-  duration: 2160h # 90d
-  renewBefore: 360h # 15d
+  duration: 2160h0m0s # 90d
+  renewBefore: 360h0m0s # 15d
   subject:
     organizations:
       - jetstack
   # The use of the common name field has been deprecated since 2000 and is
   # discouraged from being used.
   commonName: grafana.spykerman.co.uk
-  isCA: false
+  # I would prefer to be explicit and set isCA to false, but the terraform provider for
+  # kubernetes is not great and wants to use null, complaining that things are not consistent
+  # isCA: false
   privateKey:
     algorithm: RSA
     encoding: PKCS1
