@@ -9,6 +9,8 @@ grafana:
           - ${grafana_hostname}
 
   grafana.ini:
+    users:
+      viewers_can_edit: true
     auth.azuread:
       name: "Azure AD"
       enabled: true
