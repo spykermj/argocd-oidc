@@ -58,7 +58,7 @@ module "argocd_azure_application" {
   logo           = "${path.module}/images/argo-stacked-color.png"
   logout_path    = "/logout"
   redirect_paths = ["/auth/callback"]
-  source         = "./oidc"
+  source         = "github.com/spykermj/tf-azure-auth/oidc"
 }
 
 output "argocd_app_roles" {

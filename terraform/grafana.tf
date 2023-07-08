@@ -34,7 +34,7 @@ module "grafana_azure_application" {
   logo           = "${path.module}/images/Grafana_logo.svg.png"
   logout_path    = "/logout"
   redirect_paths = ["/login/azuread", "/"]
-  source         = "./oidc"
+  source         = "github.com/spykermj/tf-azure-auth/oidc"
 }
 
 output "grafana_app_ids" {
