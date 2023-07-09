@@ -73,7 +73,7 @@ resource "helm_release" "kps" {
   namespace  = kubernetes_namespace.kps.id
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
-  version    = "47.1.0"
+  version    = "47.4.0"
 
   values = [
     templatefile("${path.module}/kps-values.yaml.tpl", {
