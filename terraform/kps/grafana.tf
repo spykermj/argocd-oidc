@@ -31,7 +31,7 @@ module "grafana_azure_application" {
     },
   ]
   hostname       = local.hostname
-  logo           = "${path.module}/images/Grafana_logo.svg.png"
+  logo           = "../images/Grafana_logo.svg.png"
   logout_path    = "/logout"
   redirect_paths = ["/login/azuread", "/"]
   source         = "github.com/spykermj/tf-azure-auth/oidc"
