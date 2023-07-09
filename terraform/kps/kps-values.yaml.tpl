@@ -11,6 +11,8 @@ grafana:
   grafana.ini:
     users:
       viewers_can_edit: true
+    auth:
+      disable_login_form: true
     auth.azuread:
       name: "Azure AD"
       enabled: true
