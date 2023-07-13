@@ -1,5 +1,6 @@
 locals {
   argo_hostname = "argocd.spykerman.co.uk"
+  namespace     = "argocd"
 }
 
 module "argocd_azure_application" {
@@ -29,8 +30,17 @@ output "argocd_app_roles" {
 
 resource "kubernetes_namespace" "argocd" {
   metadata {
-    name = "argocd"
+    name = local.namespace
   }
+}
+
+resource "kubernetes_manifest" "argo_cert" {
+  manifest = yamldecode(
+    templatefile("${path.module}/argocd-cert.yaml.tpl", {
+      hostname  = local.argo_hostname
+      namespace = local.namespace
+    })
+  )
 }
 
 resource "kubernetes_namespace" "guestbook" {
@@ -56,6 +66,7 @@ resource "kubernetes_secret" "argocd_secret" {
 }
 
 resource "helm_release" "argocd" {
+  depends_on = [kubernetes_manifest.argo_cert]
   name       = "argocd"
   namespace  = kubernetes_namespace.argocd.id
   repository = "https://argoproj.github.io/argo-helm"

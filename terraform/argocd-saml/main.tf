@@ -30,6 +30,7 @@ data "azuread_client_config" "current" {}
 
 locals {
   argo_hostname = "argocd.spykerman.co.uk"
+  namespace     = "argocd"
 }
 
 module "argo_saml" {
@@ -78,7 +79,17 @@ resource "kubernetes_namespace" "guestbook" {
   }
 }
 
+resource "kubernetes_manifest" "argo_cert" {
+  manifest = yamldecode(
+    templatefile("${path.module}/argocd-cert.yaml.tpl", {
+      hostname  = local.argo_hostname
+      namespace = local.namespace
+    })
+  )
+}
+
 resource "helm_release" "argocd" {
+  depends_on = [kubernetes_manifest.argo_cert]
   name       = "argocd"
   namespace  = kubernetes_namespace.argocd.id
   repository = "https://argoproj.github.io/argo-helm"

@@ -5,9 +5,13 @@ server:
     enabled: true
     hosts:
       - ${argo_hostname}
+    tls:
+      - secretName: argocd-tls
+        hosts:
+          - ${argo_hostname}
   config:
     admin.enabled: "false"
-    url: https://${argo_hostname}/
+    url: https://${argo_hostname}
     oidc.config: |
       name: Azure
       issuer: https://login.microsoftonline.com/${azure_tenant}/v2.0

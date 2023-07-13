@@ -5,6 +5,10 @@ server:
     enabled: true
     hosts:
       - ${argo_hostname}
+    tls:
+      - secretName: argocd-tls
+        hosts:
+          - ${argo_hostname}
   config:
     admin.enabled: "false"
     url: https://${argo_hostname}
